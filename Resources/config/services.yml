@@ -1,0 +1,13 @@
+services:
+    cwd_fancygrid.grid.factory:
+        class: Cwd\FancyGridBundle\Grid\GridFactory
+        arguments:
+            - "@translator"
+            - "@doctrine"
+            - "@twig"
+
+    cwd_fancygrid.twig_extension.bootgrid:
+        class: Cwd\FancyGridBundle\Twig\FancyGridExtension
+        public: false
+        tags:
+            - { name: twig.extension }

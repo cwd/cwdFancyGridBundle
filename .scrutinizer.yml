@@ -1,0 +1,28 @@
+build:
+#    tests:
+#        before:
+#            - './bin/console --env=test doctrine:schema:drop --force'
+#            - './bin/console --env=test doctrine:schema:create'
+#        override:
+#            -
+#                command: bin/phpunit -d memory_limit=2G --no-coverage --tap -c ./phpunit.xml.dist src/
+    environment:
+        postgresql: false
+        redis: false
+        variables:
+            SYMFONY_ENV: 'test'
+        php:
+            version: 7.0.8
+            ini:
+                 'date.timezone': 'Europe/Vienna'
+    dependencies:
+        override:
+            - composer install --no-interaction --ignore-platform-reqs
+filter:
+    paths: ["*"]
+    excluded_paths:
+        - "*/Tests/*"
+        - "bin/*"
+#tools:
+#    external_code_coverage:
+#        timeout: 900

@@ -1,0 +1,45 @@
+{% extends 'Layout/main.html.twig' %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <div class="box-header bg-green-gradient">
+                    <i class="{{ icon|default('ion ion-clipboard') }}"></i>
+
+                    <h3 class="box-title">{{ title|default('')|trans }}</h3>
+
+                    <div class="box-tools pull-right" id="gridtools">
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div style="margin-bottom:10px">
+                        <a class="btn btn-primary btn-solid" href="{{ path(createRoute) }}">{{ createLabel|trans }}</a>
+                    </div>
+
+                    <div id="{{ grid.id }}" style="width:100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdn.fancygrid.com/fancy.full.min.js"></script>
+    <script type="text/javascript">
+        {{ fancygrid(grid) }}
+        $(document).ready(function(){
+
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://code.fancygrid.com/fancy.min.css" />
+    <style>
+
+    </style>
+{% endblock %}

@@ -1,0 +1,27 @@
+{
+    "name": "cwd/bootgrid-bundle",
+    "description": "Integrates Bootgrid as Symfony Bundle",
+    "type": "symfony-bundle",
+    "keywords": ["bootgrid", "bootstrap", "symfony", "grid", "table", "bundle"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ludwig Ruderstaller",
+            "email": "lr@cwd.at"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php" : ">=5.6.0",
+        "symfony/form": "~2.7|~3.0",
+        "symfony/framework-bundle": "~2.7|~3.0",
+        "symfony/security-bundle": "~2.7|~3.0",
+        "symfony/twig-bundle": "~2.7|~3.0",
+        "white-october/pagerfanta-bundle": "^1.0",
+        "doctrine/orm": "^2.5"
+    },
+    "autoload": {
+        "psr-4": { "Cwd\\FancyGridBundle\\": "" }
+    }
+
+}
