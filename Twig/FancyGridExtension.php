@@ -20,11 +20,15 @@ class FancyGridExtension extends \Twig_Extension
 {
     protected $jsOptions = [];
     protected $router;
+    protected $license;
 
     public function __construct(Router $router, $options = [])
     {
         if (!isset($options['js_options'])) {
             $options['js_options'] = [];
+        }
+        if (isset($options['license'])) {
+            $this->license = $options['license'];
         }
         $this->jsOptions = $options['js_options'];
         $this->router = $router;
@@ -71,6 +75,7 @@ class FancyGridExtension extends \Twig_Extension
         return $twig->render('CwdFancyGridBundle::grid.html.twig', [
             'grid' => $grid,
             'jsOptions' => $options,
+            'license' => $this->license
         ]);
     }
 

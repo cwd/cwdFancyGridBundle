@@ -1,17 +1,24 @@
-cwdBootgridBundle
+cwdFancyGridBundle
 =================
 
-[![Dependency Status](https://gemnasium.com/badges/2b767ec07fb4a790dfd95c58bce7cc97.svg)](https://gemnasium.com/dcbd96e51f8a1445237e7fa436b9c410)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/gp/cwdBootgridBundle/badges/quality-score.png?b=master&s=9cf74ab462ac37c55557b30aa809e92217809233)](https://scrutinizer-ci.com/gp/cwdBootgridBundle/?branch=master)
+[![Dependency Status](https://gemnasium.com/badges/github.com/cwd/cwdFancyGridBundle.svg)](https://gemnasium.com/github.com/cwd/cwdFancyGridBundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cwd/cwdFancyGridBundle/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/cwd/cwdFancyGridBundle/?branch=develop)
+[![Latest Stable Version](https://poser.pugx.org/cwd/fancygrid-bundle/v/stable)](https://packagist.org/packages/cwd/fancygrid-bundle)
+[![Total Downloads](https://poser.pugx.org/cwd/fancygrid-bundle/downloads)](https://packagist.org/packages/cwd/fancygrid-bundle)
+[![License](https://poser.pugx.org/cwd/fancygrid-bundle/license)](https://packagist.org/packages/cwd/fancygrid-bundle)
 
-This bundle integrates the JQuery Bootgrid into Symfony. see http://www.jquery-bootgrid.com/ for details.
+
+This bundle integrates the JQuery FancyGrid into Symfony. see https://fancygrid.com for details.
 
 ![screenshot](Resources/public/screenshot.png "Screenshot")
+
+For many more examples see https://fancygrid.com/samples/
+
 
 Installation
 ------------
 
-`composer require cwd/bootgrid-bundle`
+`composer require cwd/fancygrid-bundle`
 
 Add to AppKernel.php:
 ```
@@ -46,6 +53,13 @@ cwd_fancy_grid:
       resizable: true
       sortable: true
       menu: true
+```
+
+If you have a license add it to the config:
+```
+cwd_fancy_grid:
+  license: '1234123123123123123123123'
+  [...]
 ```
 
 Create your first Grid:

@@ -1,4 +1,6 @@
-
+{% if license is not empty %}
+    FancyGrid.LICENSE = ['{{ license }}'];
+{% endif %}
 var grid = new FancyGrid(
     {{ jsOptions|json_encode|raw }}
 );

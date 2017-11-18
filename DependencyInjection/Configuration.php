@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $treeBuilder->root('cwd_fancy_grid')
             ->children()
+                ->scalarNode('license')->defaultNull()->end()
                 ->variableNode('js_options')->end()
             ->end();
 
