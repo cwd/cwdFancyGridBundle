@@ -12,6 +12,8 @@ build:
         variables:
             SYMFONY_ENV: 'test'
         php:
+            code_rating: true
+            duplication: true
             version: 7.0.8
             ini:
                  'date.timezone': 'Europe/Vienna'
@@ -22,7 +24,10 @@ filter:
     paths: ["*"]
     excluded_paths:
         - "*/Tests/*"
-        - "bin/*"
+        - "Resources/*"
+        - "vendor/*"
+
+
 #tools:
 #    external_code_coverage:
 #        timeout: 900
