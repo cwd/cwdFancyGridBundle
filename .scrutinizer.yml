@@ -12,8 +12,6 @@ build:
         variables:
             SYMFONY_ENV: 'test'
         php:
-            code_rating: true
-            duplication: true
             version: 7.0.8
             ini:
                  'date.timezone': 'Europe/Vienna'
@@ -26,6 +24,11 @@ filter:
         - "*/Tests/*"
         - "Resources/*"
         - "vendor/*"
+
+checks:
+    php:
+        code_rating: true
+        duplication: true
 
 
 #tools:
