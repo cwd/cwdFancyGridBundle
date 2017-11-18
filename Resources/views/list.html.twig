@@ -18,7 +18,7 @@
                         <a class="btn btn-primary btn-solid" href="{{ path(createRoute) }}">{{ createLabel|trans }}</a>
                     </div>
 
-                    <div id="{{ grid.id }}" style="width:100%"></div>
+                    <div id="{{ grid.id }}" style="width:99%"></div>
                 </div>
             </div>
         </div>
@@ -30,9 +30,6 @@
     <script type="text/javascript" src="https://cdn.fancygrid.com/fancy.full.min.js"></script>
     <script type="text/javascript">
         {{ fancygrid(grid) }}
-        $(document).ready(function(){
-
-        });
     </script>
 {% endblock %}
 
@@ -40,6 +37,12 @@
     {{ parent() }}
     <link rel="stylesheet" href="https://code.fancygrid.com/fancy.min.css" />
     <style>
+        .fancy .btn-group .btn {
+            padding: 0 5px;
+        }
 
+        .grid-action .fancy-grid-cell-inner {
+            margin-top: 6px;
+        }
     </style>
 {% endblock %}

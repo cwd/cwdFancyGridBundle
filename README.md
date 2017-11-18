@@ -15,16 +15,37 @@ Installation
 
 Add to AppKernel.php:
 ```
-        [...]
-        new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
-        new Cwd\BootgridBundle\CwdBootgridBundle(),
-        [..]
+[...]
+new Cwd\FancyGridBundle\CwdFancyGridBundle(),
+[...]
 ```
 
-Add to config.yml:
+Or bundels.php:
 ```
-white_october_pagerfanta:
-    default_view: twitter_bootstrap3_translated
+[...]
+'Cwd\FancyGridBundle\CwdFancyGridBundle' => ['all' => true],
+[...]
+```
+
+Add to config.yml (you can use all javascript options see https://fancygrid.com/api/config):
+```
+cwd_fancy_grid:
+  js_options:
+    theme: 'bootstrap'
+    height: 'fit'
+    trackOver: true
+    i18n: '%locale%'
+    menu: true
+    selModel: 'row'
+    striped: true
+    columnLines: false
+    searching: true
+    textSelection: true
+    refreshButton: true
+    defaults:
+      resizable: true
+      sortable: true
+      menu: true
 ```
 
 Create your first Grid:
@@ -134,16 +155,18 @@ class UserController {
      */
     protected function getGrid(array $options = [])
     {
-        return $this->get('cwd_bootgrid.grid.factory')->create(UserGrid::class), $options);
+        return $this->get('cwd_fancygrid.grid.factory')->create(UserGrid::class), $options);
     }     
 ```
 
 And the view:
 ```
-{{ bootgrid(grid) }}
-
+<div id="{{ grid.id }}" style="width:99%"></div>
+<script type="text/javascript">
+    {{ fancygrid(grid) }}
+</script>
 
 {# Add the Javascript and CSS files (after jQuery is loaded) #}
-<script type="text/javascript" src="{{ asset("bundles/cwdbootgrid/js/jquery.bootgrid.min.js") }}"></script>
-<link rel="stylesheet" href="{{ asset("bundles/cwdbootgrid/css/jquery.bootgrid.min.css") }}" />
+<script type="text/javascript" src="https://cdn.fancygrid.com/fancy.full.min.js"></script>
+<link rel="stylesheet" href="https://code.fancygrid.com/fancy.min.css" />    
 ```

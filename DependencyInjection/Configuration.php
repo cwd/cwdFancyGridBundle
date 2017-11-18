@@ -18,7 +18,10 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('cwd_fancygrid');
+        $treeBuilder->root('cwd_fancy_grid')
+            ->children()
+                ->variableNode('js_options')->end()
+            ->end();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

@@ -49,4 +49,14 @@ interface GridInterface
      * @return string
      */
     public function getData();
+
+    /**
+     * @param string $name
+     * @return ColumnInterface
+     */
+    public function get($name);
+
+    public function getOption($name, $default = null);
+
+    public function getColumnDefinition();
 }
