@@ -138,7 +138,14 @@ class UserController {
     */
     public function ajaxDataAction(Request $request)
     {
-       $grid = $this->getGrid($request->request->all());
+       $options = [
+           'filter' => urldecode($request->get('filter', '')),
+           'page' => $request->get('page', 1),
+           'sortField' => $request->get('sort'),
+           'sortDir' => $request->get('dir'),
+       ];
+    
+       $grid = $this->getGrid($options);
        $data = $grid->getData();
     
        return new JsonResponse($data);
