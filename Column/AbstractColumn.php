@@ -1,12 +1,14 @@
 <?php
 /*
- * This file is part of cwdBootgridBundle
+ * This file is part of cwdFancyGridBundle
  *
- * (c)2016 cwd.at GmbH <office@cwd.at>
+ * (c)2017 cwd.at GmbH <office@cwd.at>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace Cwd\FancyGridBundle\Column;
 
 use bar\baz\source_with_namespace;
@@ -61,7 +63,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : ?string
     {
         return $this->name;
     }
@@ -69,7 +71,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * @return string
      */
-    public function getField()
+    public function getField() : ?string
     {
         return $this->field;
     }
@@ -121,21 +123,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'hidden' => false,
+            'align' => 'left',
             'cellAlign' => 'left',
-            'draggable' => false,
-            'editable' => false,
-            'flex' => 1,
-            'index' => '',
-            'lockable' => false,
-            'locked' => false,
-            'maxWidth' => null,
-            'width' => null,
-            'title' => null,
-            'sortable' => true,
-            'searchable' => true,
-            'type' => 'string',
+            'cellTip' => null,
+            'cls' => null,
+            'draggable' => null,
+            'editable' => null,
             'ellipsis' => true,
+            'flex' => 1,
+            'hidden' => false,
+            'index' => null,
+            'lockable' => null,
+            'locked' => null,
+            'maxWidth' => null,
+            'menu' => null,
+            'minWidth' => null,
+            'render' => null,
+            'resizable' => null,
+            'rightLocked' => null,
+            'sortable' => true,
+            'title' => null,
+            'type' => null,
+            'vtype' => null,
+            'width' => null,
+            'searchable' => true,
             'filter' => [
                 'header' => true,
                 'headerNote' => true,
@@ -150,34 +161,36 @@ abstract class AbstractColumn implements ColumnInterface
             'identifier' => null,
             'label' => null,
             'visible' => null,
+
         ));
 
         $resolver->setAllowedTypes('attr', 'array');
     }
 
     /**
-     * render options as data-* string
-     * @return string
+     * @return array
      */
-    public function renderOptions()
+    public function buildColumnOptions() : array
     {
         $printOptions = [
-            'index' => $this->getName(),
+            // Fancy grid doesnt like . in index name
+            'index' => str_replace('.', '_', $this->getName()),
         ];
 
+        // Legacy Mapping
         if ($this->getOption('visible')) {
             $printOptions['hidden'] = $this->getOption('visible');
         }
 
         if ($this->getOption('label')) {
-            $printOptions['title'] = $this->translator->trans($this->getOption('label'), $this->getOptions('translation_domain'));
+            $printOptions['title'] = $this->translator->trans($this->getOption('label'), [], $this->getOption('translation_domain'));
         }
 
         $options = $this->options;
 
         foreach ($options as $key => $value) {
             // Ignore this options they are used differently
-            if (in_array($key, ['attr', 'template', 'header_align', 'format','label', 'translation_domain', 'translatable', 'visible', 'identifier', 'index'])) {
+            if (in_array($key, ['attr', 'template', 'header_align','label', 'translation_domain', 'translatable', 'visible', 'identifier', 'index'])) {
                 continue;
             }
 
@@ -186,17 +199,8 @@ abstract class AbstractColumn implements ColumnInterface
                 continue;
             }
 
-            //if (is_bool($value)) {
-                //   $value = ($value) ? 'true' : 'false';
-            //}
-
-            //$printOptions['data-'.str_replace('_', '-', $key)] = $value;
             $printOptions[$key] = $value;
         }
-
-        //$dataAttributes = array_map(function ($value, $key) {
-        //    return sprintf('%s="%s"', $key, $value);
-        //}, array_values($printOptions), array_keys($printOptions));
 
         return $printOptions;
     }
@@ -226,15 +230,6 @@ abstract class AbstractColumn implements ColumnInterface
         }
 
         if (!$accessor->isReadable($object, $field)) {
-            /*
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The Field "%s" could not be found in Object of type "%s"',
-                    $field,
-                    get_class($object)
-                )
-            );
-            */
             return null;
         }
 
@@ -245,7 +240,7 @@ abstract class AbstractColumn implements ColumnInterface
      * @param string $name
      * @return bool
      */
-    public function hasOption($name)
+    public function hasOption($name) : bool
     {
         return array_key_exists($name, $this->options);
     }
@@ -255,7 +250,7 @@ abstract class AbstractColumn implements ColumnInterface
      * @param string|null $default
      * @return misc
      */
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         return array_key_exists($name, $this->options) ? $this->options[$name] : $default;
     }
@@ -263,7 +258,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions() : array
     {
         return $this->options;
     }
@@ -271,7 +266,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * @return TranslatorInterface
      */
-    public function getTranslator()
+    public function getTranslator() : TranslatorInterface
     {
         return $this->translator;
     }

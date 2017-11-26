@@ -1,12 +1,13 @@
 <?php
 /*
- * This file is part of CwdBootgridBundle
+ * This file is part of cwdFancyGridBundle
  *
- * (c)2016 cwd.at GmbH <office@cwd.at>
+ * (c)2017 cwd.at GmbH <office@cwd.at>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare(strict_types=1);
 namespace Cwd\FancyGridBundle\Column;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -19,24 +20,24 @@ interface ColumnInterface
     /**
      * @return string
      */
-    public function renderOptions();
+    public function buildColumnOptions() : array;
 
     /**
      * @param string      $name
-     * @param string|null $default
-     * @return misc
+     * @param mixed $default
+     * @return mixed
      */
-    public function getOption($name, $default = null);
+    public function getOption(string $name, $default = null);
 
     /**
      * @return string
      */
-    public function getField();
+    public function getField() : ?string;
 
     /**
      * @return string
      */
-    public function getName();
+    public function getName() : ?string;
 
     /**
      * @param mixed             $value
