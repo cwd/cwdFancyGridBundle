@@ -35,7 +35,8 @@ class ActionType extends AbstractColumn
             'actions_params' => [],
             'filter' => false,
             'template' => 'CwdFancyGridBundle:Column:actions.html.twig',
-            'width' => 200
+            'width' => 200,
+            'cls' => 'grid-action',
         ));
 
         $resolver->setAllowedTypes('actions', 'array');

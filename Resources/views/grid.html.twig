@@ -1,32 +1,6 @@
-
-$('#{{ grid.id }}').FancyGrid({
-    theme: 'bootstrap',
-    //width: 'fit',
-    height: 'fit',
-    trackOver: true,
-    i18n: 'de',
-    menu: true,
-    selModel: 'row',
-    striped: true,
-    columnLines: false,
-    defaults: {
-        resizable: true,
-        sortable: true,
-        menu: true
-    },
-    paging: {
-        pageSize: {{ grid.option('limit') }},
-        pageSizeData: {{ grid.option('pageSizeData')|json_encode }},
-        refreshButton: true
-    },
-    columns: {{ grid.getJsonColumns|raw }},
-    data: {
-        remoteSort: true,
-        remoteFilter: true,
-        proxy: {
-            url: '{{ path(grid.option("data_route"), grid.option("data_route_options")) }}'
-        }
-    },
-    searching: true,
-    textSelection: true,
-});
+{% if license is not empty %}
+    FancyGrid.LICENSE = ['{{ license }}'];
+{% endif %}
+var grid = new FancyGrid(
+    {{ jsOptions|json_encode|raw }}
+);

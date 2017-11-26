@@ -22,7 +22,15 @@ filter:
     paths: ["*"]
     excluded_paths:
         - "*/Tests/*"
-        - "bin/*"
+        - "Resources/*"
+        - "vendor/*"
+
+checks:
+    php:
+        code_rating: true
+        duplication: true
+
+
 #tools:
 #    external_code_coverage:
 #        timeout: 900

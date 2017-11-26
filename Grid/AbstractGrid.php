@@ -275,7 +275,6 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
         $resolver->setDefaults([
             'template' => 'CwdBootgridBundle:Grid:template.html.twig',
             'current' => 1,
-            'pageSizeData' => [10, 25, 50, -1],
             'filter' => null,
             'sortField' => null,
             'sortDir' => null,
@@ -290,7 +289,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
         ]);
     }
 
-    public function getJsonColumns()
+    public function getColumnDefinition()
     {
         $columns = [];
         /** @var AbstractColumn $column */
@@ -299,7 +298,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
             $columns[] = $column->renderOptions();
         }
 
-        return json_encode($columns);
+        return $columns;
     }
 
     /**
@@ -332,13 +331,6 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
         }
 
         throw new InvalidArgumentException(sprintf('The child with the name "%s" does not exist.', $name));
-    }
-
-    public function renderColumnOptions()
-    {
-        foreach ($this->get as $column) {
-
-        }
     }
 
     /**

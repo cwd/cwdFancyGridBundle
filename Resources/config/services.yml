@@ -8,6 +8,9 @@ services:
 
     cwd_fancygrid.twig_extension.bootgrid:
         class: Cwd\FancyGridBundle\Twig\FancyGridExtension
+        arguments:
+            - "@router"
+            - "%cwd.fancygrid.config%"
         public: false
         tags:
             - { name: twig.extension }
