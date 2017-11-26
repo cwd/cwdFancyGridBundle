@@ -1,14 +1,16 @@
 <?php
 /*
- * This file is part of mailowl
+ * This file is part of cwdFancyGridBundle
  *
- * (c)2016 cwd.at GmbH <office@cwd.at>
+ * (c)2017 cwd.at GmbH <office@cwd.at>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare(strict_types=1);
 namespace Cwd\FancyGridBundle\Grid;
 
+use Cwd\FancyGridBundle\Column\ColumnInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,17 +48,18 @@ interface GridInterface
     public function getQueryBuilder(ObjectManager $objectManager, array $params = []);
 
     /**
-     * @return string
+     * @return array
      */
-    public function getData();
+    public function getData() : array;
 
     /**
      * @param string $name
      * @return ColumnInterface
      */
-    public function get($name);
+    public function get(string $name) : ColumnInterface;
 
-    public function getOption($name, $default = null);
+    public function getOption(string $name, $default = null);
+    public function getOptions() : array;
 
     public function getColumnDefinition();
 }

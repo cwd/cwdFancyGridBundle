@@ -29,12 +29,26 @@
     {{ parent() }}
     <script type="text/javascript" src="https://cdn.fancygrid.com/fancy.full.min.js"></script>
     <script type="text/javascript">
+
+        {% block fancyGridController %}
+        Fancy.defineController('cwdcontrol', {
+            controls: [{
+                event: 'update',
+                handler: 'onUpdate'
+            }],
+            'onUpdate': function(grid, o) {
+                $('a.deleterow')
+                    .off('click', app.confirmDelete)
+                    .on('click', app.confirmDelete);
+            }
+        });
+        {% endblock %}
+
         {{ fancygrid(grid) }}
     </script>
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
     <link rel="stylesheet" href="https://code.fancygrid.com/fancy.min.css" />
     <style>
         .fancy .btn-group .btn {
@@ -45,4 +59,5 @@
             margin-top: 6px;
         }
     </style>
+    {{ parent() }}
 {% endblock %}

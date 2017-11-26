@@ -53,6 +53,7 @@ cwd_fancy_grid:
       resizable: true
       sortable: true
       menu: true
+    controllers: ['cwdcontrol']  
 ```
 
 If you have a license add it to the config:
