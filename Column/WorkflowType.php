@@ -13,11 +13,9 @@ namespace Cwd\FancyGridBundle\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class NumberType
- * @package Cwd\FancyGridBundle\Column
- * @author Ludwig Ruderstaler <lr@cwd.at>
+ * Class WorkflowType.
  */
-class NumberType extends AbstractColumn
+class WorkflowType extends ActionType
 {
     /**
      * {@inheritdoc}
@@ -26,15 +24,11 @@ class NumberType extends AbstractColumn
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'align' => 'right',
-            'cellAlign' => 'right',
-            'format' => 'number',
-            'type' => 'number',
-            'summary' => null,
-            'step' => null,
-        ));
+        $resolver->setDefaults([
+            'transition' => [],
+            'template' => '@CwdFancyGrid/Column/workflow_actions.html.twig',
+        ]);
 
-        $resolver->setAllowedTypes('attr', 'array');
+        $resolver->setAllowedTypes('transition', 'array');
     }
 }

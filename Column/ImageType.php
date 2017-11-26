@@ -10,15 +10,14 @@
 declare(strict_types=1);
 namespace Cwd\FancyGridBundle\Column;
 
-use Cwd\FancyGridBundle\Grid\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class NumberType
+ * Class ImageType
  * @package Cwd\FancyGridBundle\Column
  * @author Ludwig Ruderstaler <lr@cwd.at>
  */
-class DateType extends AbstractColumn
+class ImageType extends AbstractColumn
 {
     /**
      * {@inheritdoc}
@@ -28,15 +27,10 @@ class DateType extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'align' => 'right',
-            'cellAlign' => 'right',
-            'format' => [
-                'read' => 'Y-m-d H:i:s',
-                'write' => 'd.m.Y H:i:s',
-                'edit' => 'Y-m-d'
-            ],
-            'width' => 150,
-            'type' => 'date'
+            'type' => 'image',
+            'minListWidth' => null,
+            'filter' => [],
+            'prefix' => null
         ));
 
         $resolver->setAllowedTypes('attr', 'array');
@@ -48,18 +42,23 @@ class DateType extends AbstractColumn
      * @param mixed             $primary
      * @param \Twig_Environment $twig
      *
-     * @return string
+     * @return mixed
      */
     public function render($value, $object, $primary, \Twig_Environment $twig)
     {
-        if ($value === null) {
-            return null;
+        /** dont use twig if no template is provided */
+        if (null === $this->getOption('template')) {
+            return $this->getOption('prefix').$value;
         }
 
-        if (!$value instanceof \DateTime) {
-            throw new InvalidArgumentException('%s is not of expected \DateTime', $this->getName());
-        }
-
-        return $value->format($this->getOption('format')['read']);
+        return $this->renderTemplate(
+            $twig,
+            $this->getOption('template'),
+            [
+                'value'   => $this->getOption('prefux').$value,
+                'object'  => $object,
+                'primary' => $primary,
+            ]
+        );
     }
 }

@@ -9,15 +9,14 @@
  */
 declare(strict_types=1);
 namespace Cwd\FancyGridBundle\Column;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class NumberType
+ * Class TextType
  * @package Cwd\FancyGridBundle\Column
  * @author Ludwig Ruderstaler <lr@cwd.at>
  */
-class NumberType extends AbstractColumn
+class StringType extends AbstractColumn
 {
     /**
      * {@inheritdoc}
@@ -27,12 +26,10 @@ class NumberType extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'align' => 'right',
-            'cellAlign' => 'right',
+            'align' => 'left',
+            'cellAlign' => 'left',
             'format' => 'number',
-            'type' => 'number',
-            'summary' => null,
-            'step' => null,
+            'type' => 'string',
         ));
 
         $resolver->setAllowedTypes('attr', 'array');

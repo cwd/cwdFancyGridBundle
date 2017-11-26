@@ -1,12 +1,13 @@
 <?php
 /*
- * This file is part of CwdBootgridBundle
+ * This file is part of cwdFancyGridBundle
  *
- * (c)2016 cwd.at GmbH <office@cwd.at>
+ * (c)2017 cwd.at GmbH <office@cwd.at>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare(strict_types=1);
 namespace Cwd\FancyGridBundle\Grid;
 
 use Cwd\FancyGridBundle\Column\AbstractColumn;
@@ -114,7 +115,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions() : array
     {
         return $this->options;
     }
@@ -129,7 +130,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
     /**
      * @return array
      */
-    public function getData()
+    public function getData() : array
     {
         $queryBuilder = $this->getQueryBuilder($this->objectManager, $this->getOptions());
 
@@ -148,8 +149,6 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
         $pager = $this->getPager($queryBuilder);
 
         return [
-            //'current' => $pager->getCurrentPage(),
-            //'rowCount' => $this->getOption('rowCount', 10),
             'totalCount' => $pager->getNbResults(),
             'data'  => $this->parseData($pager->getCurrentPageResults()),
             'success' => true,
@@ -157,27 +156,42 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
     }
 
     /**
-     * @param \Doctrine\DBAL\Query\QueryBuilder      $queryBuilder
+     * @param QueryBuilder      $queryBuilder
      * @param ColumnInterface[] $columns
      */
-    protected function addSearch($queryBuilder, $columns)
+    protected function addSearch(QueryBuilder $queryBuilder, $columns)
     {
-
         $filter = json_decode($this->getOption('filter'));
         $where = $queryBuilder->expr()->andX();
+        $i = 0;
 
         foreach ($filter as $filterSearch) {
             if (!$this->has($filterSearch->property)) {
                 continue;
             }
 
+            $property = sprintf(':%s%s', $filterSearch->property, $i);
+
             $column = $this->get($filterSearch->property);
 
-            if ($filterSearch->operator == 'like') {
-                $where->add($queryBuilder->expr()->like($column->getField(), ':'.$filterSearch->property));
-                $queryBuilder->setParameter(':'.$filterSearch->property, '%'.$filterSearch->value.'%');
+            switch ($filterSearch->operator) {
+                case 'like':
+                    $where->add($queryBuilder->expr()->like($column->getField(), $property));
+                    $queryBuilder->setParameter($property, sprintf('%%%s%%',$filterSearch->value));
+                    break;
+                case 'gteq':
+                    $where->add($queryBuilder->expr()->gte($column->getField(), $property));
+                    $queryBuilder->setParameter($property, $filterSearch->value);
+                    break;
+                case 'lteq':
+                    $where->add($queryBuilder->expr()->lte($column->getField(), $property));
+                    $queryBuilder->setParameter($property, $filterSearch->value);
+                    break;
+
             }
 
+
+            $i++;
         }
 
         if (count($where->getParts()) > 0) {
@@ -197,14 +211,22 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
 
             foreach ($this->all() as $column) {
                 /** @var ColumnInterface $column */
-                $value = $column->getValue($row, $column->getName(), $this->findPrimary(), $this->accessor);
+                $value = $column->getValue($row, $column->getField(), $this->findPrimary(), $this->accessor);
                 $value = $column->render($value, $row, $this->getPrimaryValue($row), $this->twig);
+
+                // FancyGrid doesnt like null
+                if (null === $value) {
+                    $value = '';
+                }
 
                 if ($column->getOption('translatable', false)) {
                     $value = $this->translator->trans($value, [], $column->getOption('translation_domain'));
                 }
 
-                $rowData[$column->getName()] = $value;
+                // FancyGrid does not like . in index name
+                $name = str_replace('.', '_', $column->getName());
+
+                $rowData[$name] = $value;
             }
 
             $data[] = $rowData;
@@ -273,7 +295,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'CwdBootgridBundle:Grid:template.html.twig',
+            'template' => 'CwdFancyGridBundle:Grid:template.html.twig',
             'current' => 1,
             'filter' => null,
             'sortField' => null,
@@ -295,7 +317,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
         /** @var AbstractColumn $column */
         foreach ($this->children as $column) {
             $column->setTranslator($this->translator);
-            $columns[] = $column->renderOptions();
+            $columns[] = $column->buildColumnOptions();
         }
 
         return $columns;
@@ -305,17 +327,17 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
      * @param string $name
      * @return bool
      */
-    public function hasOption($name)
+    public function hasOption(string $name)
     {
         return array_key_exists($name, $this->options);
     }
 
     /**
-     * @param string      $name
-     * @param string|null $default
-     * @return misc
+     * @param string     $name
+     * @param mixed|null $default
+     * @return mixed
      */
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         return array_key_exists($name, $this->options) ? $this->options[$name] : $default;
     }
@@ -324,7 +346,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
      * @param string $name
      * @return ColumnInterface
      */
-    public function get($name)
+    public function get(string $name) : ColumnInterface
     {
         if (isset($this->children[$name])) {
             return $this->children[$name];
@@ -337,7 +359,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
      * @param string $name
      * @return $this
      */
-    public function remove($name)
+    public function remove(string $name)
     {
         unset($this->children[$name]);
 
@@ -348,7 +370,7 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
      * @param string $name
      * @return bool
      */
-    public function has($name)
+    public function has(string $name)
     {
         return isset($this->children[$name]);
     }
