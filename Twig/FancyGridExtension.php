@@ -1,8 +1,8 @@
 <?php
 /*
- * This file is part of cwdBootgridBundle
+ * This file is part of cwdFancyGridBundle
  *
- * (c)2016 cwd.at GmbH <office@cwd.at>
+ * (c)2017 cwd.at GmbH <office@cwd.at>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,8 +12,8 @@ use Cwd\FancyGridBundle\Grid\GridInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
- * Class BootgridExtension
- * @package Cwd\BootgridBundle\Twig
+ * Class FancyGridExtension
+ * @package Cwd\FancyGridBundle\Twig
  * @author Ludwig Ruderstaler <lr@cwd.at>
  */
 class FancyGridExtension extends \Twig_Extension
@@ -60,7 +60,8 @@ class FancyGridExtension extends \Twig_Extension
         $options['renderTo'] = $grid->getId();
         $options['paging'] = [
             'pageSize' => $grid->getOption('limit'),
-            'pageSizeData' => $grid->getOption('pageSizeData')
+            'pageSizeData' => [5, 10, 20, 50, 100],
+            'refreshButton' => true,
         ];
         $options['columns'] = $grid->getColumnDefinition();
         $options['data'] = [
