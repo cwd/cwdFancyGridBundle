@@ -43,17 +43,4 @@ class ActionType extends AbstractColumn
         $resolver->setAllowedTypes('actions', 'array');
         $resolver->setAllowedTypes('actions_params', 'array');
     }
-
-    /**
-     * @param mixed            $object
-     * @param string           $field
-     * @param string           $primary
-     * @param PropertyAccessor $accessor
-     *
-     * @return mixed
-     */
-    public function getValue($object, $field, $primary, $accessor)
-    {
-        return $accessor->getValue($object, $primary);
-    }
 }

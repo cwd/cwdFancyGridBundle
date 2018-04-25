@@ -30,7 +30,12 @@ class ImageType extends AbstractColumn
             'type' => 'image',
             'minListWidth' => null,
             'filter' => [],
-            'prefix' => null
+            'prefix' => null,
+            'flex' => null,
+            'searchable' => null,
+            'align' => null,
+            'cellAlign' => null,
+            'sortable' => null,
         ));
 
         $resolver->setAllowedTypes('attr', 'array');
@@ -55,7 +60,7 @@ class ImageType extends AbstractColumn
             $twig,
             $this->getOption('template'),
             [
-                'value'   => $this->getOption('prefux').$value,
+                'value'   => $value,
                 'object'  => $object,
                 'primary' => $primary,
             ]
