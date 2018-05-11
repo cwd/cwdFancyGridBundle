@@ -176,8 +176,14 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
 
             switch ($filterSearch->operator) {
                 case 'like':
+                    $value = $filterSearch->value;
+
+                    if ($value == 'true' || $value == 'false') {
+                        $value = $value == 'true' ? 1 : 0;
+                    }
+
                     $where->add($queryBuilder->expr()->like($column->getField(), $property));
-                    $queryBuilder->setParameter($property, sprintf('%%%s%%',$filterSearch->value));
+                    $queryBuilder->setParameter($property, sprintf('%%%s%%',$value));
                     break;
                 case 'gteq':
                     $where->add($queryBuilder->expr()->gte($column->getField(), $property));
