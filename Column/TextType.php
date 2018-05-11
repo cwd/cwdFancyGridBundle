@@ -29,7 +29,7 @@ class TextType extends AbstractColumn
         $resolver->setDefaults(array(
             'align' => 'left',
             'cellAlign' => 'left',
-            'format' => 'number',
+            'format' => 'string',
             'type' => 'string',
         ));
 
