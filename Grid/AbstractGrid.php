@@ -97,6 +97,11 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
         return $this;
     }
 
+    public function getObjectManager()
+    {
+        return $this->objectManager;
+    }
+
     /**
      * generate gridid
      * @return string
@@ -175,9 +180,19 @@ abstract class AbstractGrid implements GridInterface, \IteratorAggregate
             $column = $this->get($filterSearch->property);
 
             switch ($filterSearch->operator) {
+                case 'eq':
+                    $where->add($queryBuilder->expr()->eq($column->getField(), $property));
+                    $queryBuilder->setParameter($property, $filterSearch->value);
+                    break;
                 case 'like':
+                    $value = $filterSearch->value;
+
+                    if ($value == 'true' || $value == 'false') {
+                        $value = $value == 'true' ? 1 : 0;
+                    }
+
                     $where->add($queryBuilder->expr()->like($column->getField(), $property));
-                    $queryBuilder->setParameter($property, sprintf('%%%s%%',$filterSearch->value));
+                    $queryBuilder->setParameter($property, sprintf('%%%s%%',$value));
                     break;
                 case 'gteq':
                     $where->add($queryBuilder->expr()->gte($column->getField(), $property));

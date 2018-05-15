@@ -15,23 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Class TextType
  * @package Cwd\FancyGridBundle\Column
  * @author Ludwig Ruderstaler <lr@cwd.at>
+ * @deprecated Use TextType
  */
-class StringType extends AbstractColumn
+class StringType extends TextType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        parent::configureOptions($resolver);
-
-        $resolver->setDefaults(array(
-            'align' => 'left',
-            'cellAlign' => 'left',
-            'format' => 'number',
-            'type' => 'string',
-        ));
-
-        $resolver->setAllowedTypes('attr', 'array');
-    }
 }
