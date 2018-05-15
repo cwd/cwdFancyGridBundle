@@ -38,8 +38,6 @@ class EntityType extends AbstractColumn
         $choiceLoader = function (Options $options) {
             // Unless the choices are given explicitly, load them on demand
             if (null === $options['data']) {
-                $hash = null;
-                $qbParts = null;
 
                 if (null !== $options['query_builder']) {
                     $entityLoader = $this->getLoader($options['em'], $options['query_builder'], $options['class']);
@@ -61,15 +59,18 @@ class EntityType extends AbstractColumn
 
         $emNormalizer = function (Options $options, $em) {
             /* @var ManagerRegistry $registry */
-            if (null !== $em) {
-                if ($em instanceof ObjectManager) {
-                    return $em;
-                }
-
-                return $this->getOb->getManager($em);
+            if (null !== $em && $em instanceof ObjectManager) {
+                return $em;
             }
 
-            $em = $this->registry->getManagerForClass($options['class']);
+            if ($this->getOption('em') === null) {
+                throw new \RuntimeException(sprintf(
+                    'Object Manager not set'.
+                    'Did you forget to set it? "em"'
+                ));
+            }
+
+            $em = $this->getOption('em')->getManagerForClass($options['class']);
 
             if (null === $em) {
                 throw new \RuntimeException(sprintf(
@@ -129,8 +130,6 @@ class EntityType extends AbstractColumn
         if (is_array($this->getOption('data')) && count($this->getOption('data')) > 0) {
             return $printOptions;
         }
-
-        //new ArrayChoiceList(call_user_func($this->callback), $value)
 
         $list = $this->getOption('choice_loader');
         $viewFactory = new DefaultChoiceListFactory();
