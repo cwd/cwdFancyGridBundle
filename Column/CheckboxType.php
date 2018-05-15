@@ -13,11 +13,11 @@ namespace Cwd\FancyGridBundle\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TextType
+ * Class CheckboxType
  * @package Cwd\FancyGridBundle\Column
  * @author Ludwig Ruderstaler <lr@cwd.at>
  */
-class TextType extends AbstractColumn
+class CheckboxType extends AbstractColumn
 {
     /**
      * {@inheritdoc}
@@ -27,9 +27,11 @@ class TextType extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'align' => 'left',
-            'cellAlign' => 'left',
-            'type' => 'string',
+            'align' => 'center',
+            'cellAlign' => 'center',
+            'type' => 'checkbox',
+            'summary' => null,
+            'step' => null,
         ));
 
         $resolver->setAllowedTypes('attr', 'array');

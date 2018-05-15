@@ -13,11 +13,11 @@ namespace Cwd\FancyGridBundle\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TextType
+ * Class ChoiceType
  * @package Cwd\FancyGridBundle\Column
  * @author Ludwig Ruderstaler <lr@cwd.at>
  */
-class TextType extends AbstractColumn
+class ChoiceType extends AbstractColumn
 {
     /**
      * {@inheritdoc}
@@ -29,9 +29,11 @@ class TextType extends AbstractColumn
         $resolver->setDefaults(array(
             'align' => 'left',
             'cellAlign' => 'left',
-            'type' => 'string',
+            'type' => 'combo',
+            'data' => [],
         ));
 
         $resolver->setAllowedTypes('attr', 'array');
+        $resolver->setAllowedTypes('data', 'array');
     }
 }
