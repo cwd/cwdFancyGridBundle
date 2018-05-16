@@ -1,6 +1,7 @@
 {% if license is not empty %}
     FancyGrid.LICENSE = ['{{ license }}'];
 {% endif %}
-var grid = new FancyGrid(
-    {{ jsOptions|json_encode|raw }}
-);
+
+var gridConfig = {{ jsOptions|json_encode|raw }}
+$(document).trigger('fancygrid.beforeInit', [{id: '{{ grid.id }}', config: gridConfig}]);
+var grid = new FancyGrid(gridConfig);
