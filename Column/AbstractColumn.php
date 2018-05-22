@@ -190,7 +190,7 @@ abstract class AbstractColumn implements ColumnInterface
 
         foreach ($options as $key => $value) {
             // Ignore this options they are used differently
-            if (in_array($key, ['attr', 'template', 'header_align','label', 'translation_domain', 'translatable', 'visible', 'identifier', 'index'])) {
+            if (in_array($key, ['attr', 'template', 'header_align','label', 'translation_domain', 'translatable', 'visible', 'identifier', 'index', 'class', 'em', 'query_builder', 'choice_loader'])) {
                 continue;
             }
 
